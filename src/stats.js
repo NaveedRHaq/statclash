@@ -43,7 +43,7 @@ export default function StatsTable() {
             <TableRow>
               <TableCell>Rk</TableCell>
               <TableCell>Team</TableCell>
-              <TableCell>X</TableCell> {/* Twitter column header */}
+              <TableCell>X</TableCell>
               <TableCell>G</TableCell>
               <TableCell>MP</TableCell>
               <TableCell>FG</TableCell>

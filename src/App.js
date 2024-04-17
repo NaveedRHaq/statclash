@@ -73,7 +73,7 @@ function App() {
 
   const Statistics = () => (
     <div>
-      <h2>Team Stats</h2>
+      <h2 style={{marginLeft: '20px' }}>Team Stats</h2>
       <Stats/>
     </div>
   );
