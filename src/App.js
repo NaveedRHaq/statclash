@@ -3,6 +3,9 @@ import { SingleEliminationBracket, SVGViewer , Match} from '@g-loot/react-tourna
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Stats from './stats';
+import GameButtons1 from './selector1';
+import GameButtons2 from './selector2';
+import GameButtons3 from './selector3';
 
 const ER1 = [
   // First Round
@@ -70,6 +73,26 @@ let games = firstRound;
 const rounds = [firstRound, secondRound, thirdRound];
 function App() {
   const [currentView, setCurrentView] = useState('Bracket');
+  const [currentRoundIndex, setCurrentRoundIndex] = useState(0);
+
+  const advanceRound = () => {
+    const nextRoundIndex = currentRoundIndex + 1;
+    
+    if (currentRoundIndex === 0){
+      easternConferenceMatches = ER2;
+      setCurrentRoundIndex(nextRoundIndex);
+    }else if (currentRoundIndex === 1){
+      easternConferenceMatches = ER3;
+      setCurrentRoundIndex(nextRoundIndex);
+    }else{
+      easternConferenceMatches = ER1;
+      alert("Playoffs have ended");
+      setCurrentRoundIndex(0);
+    }
+    
+    
+  };
+  
 
   const Statistics = () => (
     <div>
@@ -90,21 +113,53 @@ function App() {
   return (
     <div>
       <Header />
-      {currentView === 'Bracket' ? (
-        <SingleEliminationBracket
-          matches={ER2}
-          matchComponent={Match} 
-          svgWrapper={({ children, ...props }) => (
-            <SVGViewer width={1200} height={800} {...props}>
-              {children}
-            </SVGViewer>
+      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'stretch', height: '100%' }}>
+        <div style={{ flex: 2, minWidth: 0 }}>
+          {currentView === 'Bracket' ? (
+            <SingleEliminationBracket
+              matches={easternConferenceMatches}
+              matchComponent={Match}
+              svgWrapper={({ children, ...props }) => (
+                <SVGViewer width={1200} height={800} {...props}>
+                  {children}
+                </SVGViewer>
+              )}
+            />
+          ) : (
+            <Statistics />
           )}
-        />
-      ) : (
-        <Statistics />
-      )}
+        </div>
+        {currentView === 'Bracket' && (
+          <div style={{ flex: 1, paddingLeft: '20px' }}>
+            {currentRoundIndex === 0 ? <GameButtons1 /> : currentRoundIndex === 1 ? <GameButtons2 /> : <GameButtons3 />}
+          </div>
+        )}
+      </div>
+      {currentView === 'Bracket' ? (
+            <button 
+            onClick={advanceRound} 
+            style={{
+              position: 'fixed',
+              right: '20px',
+              bottom: '20px',
+              padding: '10px 20px',
+              backgroundColor: '#007BFF',
+              color: 'white',
+              border: 'none',
+              borderRadius: '5px',
+              cursor: 'pointer',
+              fontSize: '16px',
+              fontWeight: 'bold',
+            }}
+          >
+            Advance Round
+          </button>
+          ) : (<div></div>)
+          }
+      
     </div>
   );
+  
 };
 
 export default App;
