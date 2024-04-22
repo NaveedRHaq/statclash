@@ -7,91 +7,16 @@ import Media from './media'
 import GameButtons1 from './selector1';
 import GameButtons2 from './selector2';
 import GameButtons3 from './selector3';
-
-const ER1 = [
-  // First Round
-  { id: 1, name: "Cavaliers vs. Pistons", nextMatchId: 5, startTime: "2016-04-17", state: "PENDING", winner: "Cleveland", participants: [{ id: "Cleveland", name: "Cleveland Cavaliers" }, { id: "Detroit", name: "Detroit Pistons" }] },
-  { id: 2, name: "Raptors vs. Pacers", nextMatchId: 6, startTime: "2016-04-16", state: "PENDING", winner: "Toronto",participants: [{ id: "Toronto", name: "Toronto Raptors" }, { id: "Indiana", name: "Indiana Pacers" }] },
-  { id: 3, name: "Heat vs. Hornets", nextMatchId: 6, startTime: "2016-04-17", state: "PENDING", winner: "Miami",participants: [{ id: "Miami", name: "Miami Heat" }, { id: "Charlotte", name: "Charlotte Hornets" }] },
-  { id: 4, name: "Hawks vs. Celtics", nextMatchId: 5, startTime: "2016-04-16", state: "PENDING", winner: "Atlanta",participants: [{ id: "Boston", name: "Boston Celtics" }, { id: "Atlanta", name: "Atlanta Hawks" }] },
-  
-  // Conference Semifinals
-  { id: 5, name: "TBD", nextMatchId: 7, startTime: "2016-05-02", state: "PENDING", winner: "Cleveland", participants: [] },
-  { id: 6, name: "TBD", nextMatchId: 7, startTime: "2016-05-03", state: "PENDING",winner: "Toronto", participants: [] },
-  
-  // Conference Finals
-  { id: 7, name: "TBD", nextMatchId: null, startTime: "2016-05-17", state: "PENDING",winner: "Cleveland", participants: [] },
-];
-
-const ER2 = [
-  // First Round
-  { id: 1, name: "Cavaliers vs. Pistons", nextMatchId: 5, startTime: "2016-04-17", state: "PENDING", winner: "Cleveland", participants: [{ id: "Cleveland", name: "Cleveland Cavaliers" }, { id: "Detroit", name: "Detroit Pistons" }] },
-  { id: 2, name: "Raptors vs. Pacers", nextMatchId: 6, startTime: "2016-04-16", state: "PENDING", winner: "Toronto",participants: [{ id: "Toronto", name: "Toronto Raptors" }, { id: "Indiana", name: "Indiana Pacers" }] },
-  { id: 3, name: "Heat vs. Hornets", nextMatchId: 6, startTime: "2016-04-17", state: "PENDING", winner: "Miami",participants: [{ id: "Miami", name: "Miami Heat" }, { id: "Charlotte", name: "Charlotte Hornets" }] },
-  { id: 4, name: "Hawks vs. Celtics", nextMatchId: 5, startTime: "2016-04-16", state: "PENDING", winner: "Atlanta",participants: [{ id: "Boston", name: "Boston Celtics" }, { id: "Atlanta", name: "Atlanta Hawks" }] },
-  
-  // Conference Semifinals
-  { id: 5, name: "Cavaliers vs. Hawks", nextMatchId: 7, startTime: "2016-05-02", state: "PENDING", winner: "Cleveland", participants: [{ id: "Cleveland", name: "Cleveland Cavaliers" },{ id: "Atlanta", name: "Atlanta Hawks" }] },
-  { id: 6, name: "Raptors vs. Heat", nextMatchId: 7, startTime: "2016-05-03", state: "PENDING",winner: "Toronto", participants: [{ id: "Toronto", name: "Toronto Raptors" },{ id: "Miami", name: "Miami Heat" }] },
-  
-  // Conference Finals
-  { id: 7, name: "TBD", nextMatchId: null, startTime: "2016-05-17", state: "PENDING",winner: "Cleveland", participants: [] },
-];
-const ER3 = [
-  // First Round
-  { id: 1, name: "Cavaliers vs. Pistons", nextMatchId: 5, startTime: "2016-04-17", state: "PENDING", winner: "Cleveland", participants: [{ id: "Cleveland", name: "Cleveland Cavaliers" }, { id: "Detroit", name: "Detroit Pistons" }] },
-  { id: 2, name: "Raptors vs. Pacers", nextMatchId: 6, startTime: "2016-04-16", state: "PENDING", winner: "Toronto",participants: [{ id: "Toronto", name: "Toronto Raptors" }, { id: "Indiana", name: "Indiana Pacers" }] },
-  { id: 3, name: "Heat vs. Hornets", nextMatchId: 6, startTime: "2016-04-17", state: "PENDING", winner: "Miami",participants: [{ id: "Miami", name: "Miami Heat" }, { id: "Charlotte", name: "Charlotte Hornets" }] },
-  { id: 4, name: "Hawks vs. Celtics", nextMatchId: 5, startTime: "2016-04-16", state: "PENDING", winner: "Atlanta",participants: [{ id: "Boston", name: "Boston Celtics" }, { id: "Atlanta", name: "Atlanta Hawks" }] },
-  
-  // Conference Semifinals
-  { id: 5, name: "Cavaliers vs. Hawks", nextMatchId: 7, startTime: "2016-05-02", state: "PENDING", winner: "Cleveland", participants: [{ id: "Cleveland", name: "Cleveland Cavaliers" },{ id: "Atlanta", name: "Atlanta Hawks" }] },
-  { id: 6, name: "Raptors vs. Heat", nextMatchId: 7, startTime: "2016-05-03", state: "PENDING",winner: "Toronto", participants: [{ id: "Toronto", name: "Toronto Raptors" },{ id: "Miami", name: "Miami Heat" }] },
-  
-  // Conference Finals
-  { id: 7, name: "Cavaliers vs. Raptors", nextMatchId: null, startTime: "2016-05-17", state: "PENDING",winner: "Cleveland", participants: [{ id: "Cleveland", name: "Cleveland Cavaliers" },{ id: "Toronto", name: "Toronto Raptors" }] },
-];
-
-let easternConferenceMatches = ER1;
-let round = 1;
-
+import Basketball from './basketball';
+import NFL from './nfl';
+import MLB from './mlb';
 function App() {
   const [currentView, setCurrentView] = useState('Bracket');
   const [currentRoundIndex, setCurrentRoundIndex] = useState(0);
   const [score, setScore] = useState(0);
+  const [currentSport, setCurrentSport] = useState('basketball');
 
-  const updateScore = (correctGuesses) => {
-    setScore(score + correctGuesses); // Update the score
-  };
-
-  const advanceRound = () => {
-    const nextRoundIndex = currentRoundIndex + 1;
-
-    if (currentRoundIndex === 0) {
-      easternConferenceMatches = ER2;
-      setCurrentRoundIndex(nextRoundIndex);
-    } else if (currentRoundIndex === 1) {
-      easternConferenceMatches = ER3;
-      setCurrentRoundIndex(nextRoundIndex);
-    } else {
-      easternConferenceMatches = ER1;
-      alert("Playoffs have ended");
-      setCurrentRoundIndex(0);
-    }
-  };
-
-  const onRevealWinners = (selectedTeams, roundsData) => {
-    let correctGuesses = 0;
-
-    roundsData.forEach((game) => {
-      if (selectedTeams.includes(game.winner)) {
-        correctGuesses++;
-      }
-    });
-
-    setScore((prevScore) => prevScore + correctGuesses); // Update the overall score
-  };
-
+  
   const Statistics = () => (
     <div>
       <h2>Team Stats</h2>
@@ -112,7 +37,19 @@ function App() {
         className={`btn m-2 ${currentView === 'Bracket' ? 'btn-primary' : 'btn-secondary'}`}
         onClick={() => setCurrentView('Bracket')}
       >
-        Bracket
+       NBA Bracket
+      </button>
+      <button
+        className={`btn m-2 ${currentView === 'NFLBracket' ? 'btn-primary' : 'btn-secondary'}`}
+        onClick={() => setCurrentView('NFLBracket')}
+      >
+       NFL Bracket
+      </button>
+      <button
+        className={`btn m-2 ${currentView === 'MLBBracket' ? 'btn-primary' : 'btn-secondary'}`}
+        onClick={() => setCurrentView('MLBBracket')}
+      >
+       MLB Bracket
       </button>
       <button
         className={`btn m-2 ${currentView === 'Statistics' ? 'btn-primary' : 'btn-secondary'}`}
@@ -126,10 +63,7 @@ function App() {
       >
         Sports News
       </button>
-      {/* Displaying the overall score */}
-      <div className="score-display" style={{ padding: '10px' }}>
-        <h4>Score: {score}</h4>
-      </div>
+
     </div>
   );
 
@@ -141,61 +75,21 @@ function App() {
       >
         <div style={{ flex: 2, minWidth: 0 }}>
           {currentView === 'Bracket' ? (
-            <SingleEliminationBracket
-              matches={easternConferenceMatches}
-              matchComponent={Match}
-              svgWrapper={({ children, ...props }) => (
-                <SVGViewer width={1200} height={800} {...props}>
-                  {children}
-                </SVGViewer>
-              )}
-            />
+            <Basketball/>
           ) : currentView === 'Statistics' ? (
             <Statistics />
-          ) : (
+          ) : currentView === 'NFLBracket' ? (
+            <NFL />
+          ) : currentView === 'MLBBracket' ? (
+            <MLB />
+          ) :(
             <News />
           )}
         </div>
-        {currentView === 'Bracket' && (
-          <div style={{ flex: 1, paddingLeft: '20px' }}>
-            {currentRoundIndex === 0 ? (
-              <GameButtons1
-                onRevealWinners={(selectedTeams) => onRevealWinners(selectedTeams, ER1)}
-                updateScore={updateScore} // Pass the function here
-              />
-            ) : currentRoundIndex === 1 ? (
-              <GameButtons2
-              onRevealWinners={(selectedTeams) => onRevealWinners(selectedTeams, ER2)}
-              updateScore={updateScore} // Pass the function here
-            />
-            ) : (
-              <GameButtons3 onRevealWinners={(selectedTeams) => onRevealWinners(selectedTeams, ER3)} />
-            )}
-          </div>
-        )}
+        
       </div>
-      {currentView === 'Bracket' ? (
-        <button
-          onClick={advanceRound}
-          style={{
-            position: 'fixed',
-            right: '20px',
-            bottom: '20px',
-            padding: '10px 20px',
-            backgroundColor: '#007BFF',
-            color: 'white',
-            border: 'none',
-            borderRadius: '5px',
-            cursor: 'pointer',
-            fontSize: '16px',
-            fontWeight: 'bold',
-          }}
-        >
-          Advance Round
-        </button>
-      ) : (
-        <div></div>
-      )}
+      
+  
     </div>
   );
 }
