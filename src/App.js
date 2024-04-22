@@ -3,6 +3,7 @@ import { SingleEliminationBracket, SVGViewer , Match} from '@g-loot/react-tourna
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Stats from './stats';
+import Media from './media'
 import GameButtons1 from './selector1';
 import GameButtons2 from './selector2';
 import GameButtons3 from './selector3';
@@ -51,26 +52,8 @@ const ER3 = [
   { id: 7, name: "Cavaliers vs. Raptors", nextMatchId: null, startTime: "2016-05-17", state: "PENDING",winner: "Cleveland", participants: [{ id: "Cleveland", name: "Cleveland Cavaliers" },{ id: "Toronto", name: "Toronto Raptors" }] },
 ];
 
-const firstRound = [
-  { id: 1, name: "Cavaliers vs. Pistons", nextMatchId: 5, startTime: "2016-04-17", state: "PENDING", winner: "Cleveland", participants: [{ id: "Cleveland", name: "Cleveland Cavaliers" }, { id: "Detroit", name: "Detroit Pistons" }] },
-  { id: 2, name: "Raptors vs. Pacers", nextMatchId: 6, startTime: "2016-04-16", state: "PENDING", winner: "Toronto",participants: [{ id: "Toronto", name: "Toronto Raptors" }, { id: "Indiana", name: "Indiana Pacers" }] },
-  { id: 3, name: "Heat vs. Hornets", nextMatchId: 6, startTime: "2016-04-17", state: "PENDING", winner: "Miami",participants: [{ id: "Miami", name: "Miami Heat" }, { id: "Charlotte", name: "Charlotte Hornets" }] },
-  { id: 4, name: "Hawks vs. Celtics", nextMatchId: 5, startTime: "2016-04-16", state: "PENDING", winner: "Atlanta",participants: [{ id: "Boston", name: "Boston Celtics" }, { id: "Atlanta", name: "Atlanta Hawks" }] }
-];
-
-const secondRound = [
-  { id: 5, name: "Cavaliers vs. Hawks", nextMatchId: 7, startTime: "2016-05-02", state: "PENDING", winner: "Cleveland", participants: [{ id: "Cleveland", name: "Cleveland Cavaliers" },{ id: "Atlanta", name: "Atlanta Hawks" }] },
-  { id: 6, name: "Raptors vs. Heat", nextMatchId: 7, startTime: "2016-05-03", state: "PENDING",winner: "Toronto", participants: [{ id: "Toronto", name: "Toronto Raptors" },{ id: "Miami", name: "Miami Heat" }] }
-]
-
-const thirdRound = [
-  { id: 7, name: "Cavaliers vs. Raptors", nextMatchId: null, startTime: "2016-05-17", state: "PENDING",winner: "Cleveland", participants: [{ id: "Cleveland", name: "Cleveland Cavaliers" },{ id: "Toronto", name: "Toronto Raptors" }] },
-]
-
 let easternConferenceMatches = ER1;
 let round = 1;
-let games = firstRound;
-const rounds = [firstRound, secondRound, thirdRound];
 function App() {
   const [currentView, setCurrentView] = useState('Bracket');
   const [currentRoundIndex, setCurrentRoundIndex] = useState(0);
@@ -89,11 +72,8 @@ function App() {
       alert("Playoffs have ended");
       setCurrentRoundIndex(0);
     }
-    
-    
   };
   
-
   const Statistics = () => (
     <div>
       <h2>Team Stats</h2>
@@ -101,15 +81,36 @@ function App() {
     </div>
   );
 
-  const Header = () => (
-    <div className="App-header">
-      <button className="btn btn-primary m-2" onClick={() => setCurrentView('Bracket')}>Bracket</button>
-      <button className="btn btn-secondary m-2" onClick={() => setCurrentView('Statistics')}>Statistics</button>
+  const News = () => (
+    <div>
+      <h2>Sports News</h2>
+      <Media/>
     </div>
   );
+
+  const Header = () => (
+    <div className="App-header">
+      <button
+        className={`btn m-2 ${currentView === 'Bracket' ? 'btn-primary' : 'btn-secondary'}`}
+        onClick={() => setCurrentView('Bracket')}
+      >
+        Bracket
+      </button>
+      <button
+        className={`btn m-2 ${currentView === 'Statistics' ? 'btn-primary' : 'btn-secondary'}`}
+        onClick={() => setCurrentView('Statistics')}
+      >
+        Statistics
+      </button>
+      <button
+        className={`btn m-2 ${currentView === 'News' ? 'btn-primary' : 'btn-secondary'}`}
+        onClick={() => setCurrentView('News')}
+      >
+        Sports News
+      </button>
+    </div>
+  );  
   
-
-
   return (
     <div>
       <Header />
@@ -125,8 +126,10 @@ function App() {
                 </SVGViewer>
               )}
             />
-          ) : (
+          ) : currentView === 'Statistics' ? (
             <Statistics />
+          ) : (
+            <News />
           )}
         </div>
         {currentView === 'Bracket' && (
