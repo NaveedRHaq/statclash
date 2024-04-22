@@ -54,37 +54,55 @@ const ER3 = [
 
 let easternConferenceMatches = ER1;
 let round = 1;
+
 function App() {
   const [currentView, setCurrentView] = useState('Bracket');
   const [currentRoundIndex, setCurrentRoundIndex] = useState(0);
+  const [score, setScore] = useState(0);
+
+  const updateScore = (correctGuesses) => {
+    setScore(score + correctGuesses); // Update the score
+  };
 
   const advanceRound = () => {
     const nextRoundIndex = currentRoundIndex + 1;
-    
-    if (currentRoundIndex === 0){
+
+    if (currentRoundIndex === 0) {
       easternConferenceMatches = ER2;
       setCurrentRoundIndex(nextRoundIndex);
-    }else if (currentRoundIndex === 1){
+    } else if (currentRoundIndex === 1) {
       easternConferenceMatches = ER3;
       setCurrentRoundIndex(nextRoundIndex);
-    }else{
+    } else {
       easternConferenceMatches = ER1;
       alert("Playoffs have ended");
       setCurrentRoundIndex(0);
     }
   };
-  
+
+  const onRevealWinners = (selectedTeams, roundsData) => {
+    let correctGuesses = 0;
+
+    roundsData.forEach((game) => {
+      if (selectedTeams.includes(game.winner)) {
+        correctGuesses++;
+      }
+    });
+
+    setScore((prevScore) => prevScore + correctGuesses); // Update the overall score
+  };
+
   const Statistics = () => (
     <div>
       <h2>Team Stats</h2>
-      <Stats/>
+      <Stats />
     </div>
   );
 
   const News = () => (
     <div>
       <h2>Sports News</h2>
-      <Media/>
+      <Media />
     </div>
   );
 
@@ -108,13 +126,19 @@ function App() {
       >
         Sports News
       </button>
+      {/* Displaying the overall score */}
+      <div className="score-display" style={{ padding: '10px' }}>
+        <h4>Score: {score}</h4>
+      </div>
     </div>
-  );  
-  
+  );
+
   return (
     <div>
       <Header />
-      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'stretch', height: '100%' }}>
+      <div
+        style={{ display: 'flex', flexDirection: 'row', alignItems: 'stretch', height: '100%' }}
+      >
         <div style={{ flex: 2, minWidth: 0 }}>
           {currentView === 'Bracket' ? (
             <SingleEliminationBracket
@@ -134,35 +158,46 @@ function App() {
         </div>
         {currentView === 'Bracket' && (
           <div style={{ flex: 1, paddingLeft: '20px' }}>
-            {currentRoundIndex === 0 ? <GameButtons1 /> : currentRoundIndex === 1 ? <GameButtons2 /> : <GameButtons3 />}
+            {currentRoundIndex === 0 ? (
+              <GameButtons1
+                onRevealWinners={(selectedTeams) => onRevealWinners(selectedTeams, ER1)}
+                updateScore={updateScore} // Pass the function here
+              />
+            ) : currentRoundIndex === 1 ? (
+              <GameButtons2
+              onRevealWinners={(selectedTeams) => onRevealWinners(selectedTeams, ER2)}
+              updateScore={updateScore} // Pass the function here
+            />
+            ) : (
+              <GameButtons3 onRevealWinners={(selectedTeams) => onRevealWinners(selectedTeams, ER3)} />
+            )}
           </div>
         )}
       </div>
       {currentView === 'Bracket' ? (
-            <button 
-            onClick={advanceRound} 
-            style={{
-              position: 'fixed',
-              right: '20px',
-              bottom: '20px',
-              padding: '10px 20px',
-              backgroundColor: '#007BFF',
-              color: 'white',
-              border: 'none',
-              borderRadius: '5px',
-              cursor: 'pointer',
-              fontSize: '16px',
-              fontWeight: 'bold',
-            }}
-          >
-            Advance Round
-          </button>
-          ) : (<div></div>)
-          }
-      
+        <button
+          onClick={advanceRound}
+          style={{
+            position: 'fixed',
+            right: '20px',
+            bottom: '20px',
+            padding: '10px 20px',
+            backgroundColor: '#007BFF',
+            color: 'white',
+            border: 'none',
+            borderRadius: '5px',
+            cursor: 'pointer',
+            fontSize: '16px',
+            fontWeight: 'bold',
+          }}
+        >
+          Advance Round
+        </button>
+      ) : (
+        <div></div>
+      )}
     </div>
   );
-  
-};
+}
 
 export default App;
