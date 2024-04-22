@@ -1,23 +1,5 @@
 import React, { useState } from 'react';
-
-const firstRound = [
-  { id: 1, name: "Cavaliers vs. Pistons", nextMatchId: 5, startTime: "2016-04-17", state: "PENDING", winner: "Cleveland", participants: [{ id: "Cleveland", name: "Cleveland Cavaliers" }, { id: "Detroit", name: "Detroit Pistons" }] },
-  { id: 2, name: "Raptors vs. Pacers", nextMatchId: 6, startTime: "2016-04-16", state: "PENDING", winner: "Toronto", participants: [{ id: "Toronto", name: "Toronto Raptors" }, { id: "Indiana", name: "Indiana Pacers" }] },
-  { id: 3, name: "Heat vs. Hornets", nextMatchId: 6, startTime: "2016-04-17", state: "PENDING", winner: "Miami", participants: [{ id: "Miami", name: "Miami Heat" }, { id: "Charlotte", name: "Charlotte Hornets" }] },
-  { id: 4, name: "Hawks vs. Celtics", nextMatchId: 5, startTime: "2016-04-16", state: "PENDING", winner: "Atlanta", participants: [{ id: "Boston", name: "Boston Celtics" }, { id: "Atlanta", name: "Atlanta Hawks" }] }
-];
-
-// Define NBA team colors
-const teamColors = {
-  "Cleveland Cavaliers": { backgroundColor: '#6F263D', color: '#FFB81C' },  // Wine and gold
-  "Detroit Pistons": { backgroundColor: '#C8102E', color: '#FFFFFF' },      // Red and white
-  "Toronto Raptors": { backgroundColor: '#CE1141', color: '#FFFFFF' },      // Red and white
-  "Indiana Pacers": { backgroundColor: '#002D62', color: '#FDBB30' },       // Navy and gold
-  "Miami Heat": { backgroundColor: '#98002E', color: '#F9A01B' },           // Red and orange
-  "Charlotte Hornets": { backgroundColor: '#1D1160', color: '#00788C' },    // Purple and teal
-  "Boston Celtics": { backgroundColor: '#007A33', color: '#FFFFFF' },       // Green and white
-  "Atlanta Hawks": { backgroundColor: '#E03A3E', color: '#C1D32F' }         // Red and volt green
-};
+import { rounds, teamColors } from './nbadata';
 
 const GameButtons1 = () => {
 
@@ -41,7 +23,7 @@ const GameButtons1 = () => {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      {firstRound.map(game => (
+      {rounds.firstRound.map(game => (
         <div key={game.id} style={{ margin: '3px', display: 'flex', justifyContent: 'center', width: '100%' }}>
           {game.participants.map(participant => (
             <button
